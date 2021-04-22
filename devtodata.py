@@ -41,6 +41,14 @@ def create_dict_from_jsonfile(filename):
         json_dict = json.load(f)
     return json_dict
 
+def save_post_html(post_dictionary):
+    for post in post_dictionary:
+        url = post_dictionary[post]['url']
+        post_content = requests.get(url)
+        post_filename = 'data' + str(post) + '.html'
+        with open(post_filename, 'w') as f:
+            f.write(post_content.text)
+
 def main():
     print('a program for processing data from dev.to')
     filename_root = 'data/response-040921-latest-p'
@@ -53,14 +61,7 @@ def main():
         for p in page:
             all_posts[p['id']] = p
 
-    print(len(all_posts))
-    for post in all_posts:
-        print(all_posts[post]['url'])
-        url = all_posts[post]['url']
-        post_content = requests.get(url)
-        post_filename = 'data/' + str(post) + '.html'
-        with open(post_filename, 'w') as f:
-            f.write(post_content.text)
+    save_post_html(all_posts)
 
 
 
