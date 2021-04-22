@@ -3,7 +3,7 @@ import json
 from configparser import ConfigParser
 
 config = ConfigParser()
-config.readfp(open('settings.ini'))
+config.read_file(open('settings.ini'))
 api_key = config.get('devto', 'api_key')
 
 baseurl = 'https://dev.to/api/'
@@ -54,6 +54,13 @@ def main():
             all_posts[p['id']] = p
 
     print(len(all_posts))
+    for post in all_posts:
+        print(all_posts[post]['url'])
+        url = all_posts[post]['url']
+        post_content = requests.get(url)
+        post_filename = 'data/' + str(post) + '.html'
+        with open(post_filename, 'w') as f:
+            f.write(post_content.text)
 
 
 
